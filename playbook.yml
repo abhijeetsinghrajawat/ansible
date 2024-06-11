@@ -1,1 +1,17 @@
+---
+- name: Create a file on Ubuntu VM
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure the destination directory exists
+      file:
+        path: /home
+        state: directory
+        mode: '0755'
+
+    - name: Create a file with specific content
+      copy:
+        dest: /home/your_file.txt
+        content: "Hello, this is a file created by Ansible.\n"
+        mode: '0644'
 
