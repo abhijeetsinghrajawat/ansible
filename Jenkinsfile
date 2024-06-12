@@ -19,10 +19,10 @@ pipeline {
                 sh 'chmod 600 /tmp/my-ansible-key.pem'
 
                 // Create the Ansible inventory file
-                writeFile file: 'hosts.ini', text: 
+                writeFile file: 'hosts.ini', text: '''
                 [all]
                 ubuntu_vm ansible_host=13.201.77.178 ansible_user=ubuntu ansible_ssh_private_key_file=/tmp/my-ansible-key.pem
-                
+                '''
             }
         }
         stage('Run Ansible Playbook') {
