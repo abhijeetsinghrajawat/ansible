@@ -20,6 +20,7 @@ pipeline {
                 writeFile file: 'inventory', text: '''
                 [all]
                 ubuntu_vm ansible_host=15.206.149.52 ansible_user=ubuntu ansible_ssh_private_key_file=/tmp/my-ansible-key.pem
+
                 '''
             }
         }
