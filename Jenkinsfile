@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                // Checkout the repository containing the playbook
+                // Checkout the repository containing the playbook and inventory
                 checkout scm
             }
         }
@@ -15,18 +15,12 @@ pipeline {
                 // Save the PEM file to a known location and set appropriate permissions
                 sh 'cp $PEM_FILE /tmp/my-ansible-key.pem'
                 sh 'chmod 600 /tmp/my-ansible-key.pem'
-
-                // Create the Ansible inventory file
-                writeFile file: 'hosts.ini', text: '''
-                [all]
-                ubuntu_vm ansible_host=13.201.77.178 ansible_user=ip-172-31-14-195 ansible_ssh_private_key_file=/tmp/my-ansible-key.pem
-                '''
             }
         }
         stage('Run Ansible Playbook') {
             steps {
                 // Run the Ansible playbook
-                sh 'ansible-playbook -i hosts.ini playbook.yml'
+                sh 'ansible-playbook -i inventory playbook.yml'
             }
         }
     }
@@ -37,4 +31,3 @@ pipeline {
         }
     }
 }
-
