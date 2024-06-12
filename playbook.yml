@@ -5,13 +5,13 @@
   tasks:
     - name: Ensure the destination directory exists
       file:
-        path: /home
+        path: /home/ubuntu/ansible_test
         state: directory
         mode: '0755'
 
     - name: Create a file with specific content
       copy:
-        dest: /home/your_file.txt
+        dest: /home/ubuntu/ansible.txt
         content: "Hello, this is a file created by Ansible.\n"
         mode: '0644'
 
