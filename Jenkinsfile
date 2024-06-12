@@ -19,7 +19,7 @@ pipeline {
                 // Create the Ansible inventory file
                 writeFile file: 'hosts.ini', text: '''
                 [all]
-                ubuntu_vm ansible_host=13.201.77.178 ansible_user=ubuntu ansible_ssh_private_key_file=/tmp/my-ansible-key.pem
+                ubuntu_vm ansible_host=13.201.77.178 ansible_user=ubuntu ansible_ssh_private_key_file=$PEM_FILE
                 '''
             }
         }
