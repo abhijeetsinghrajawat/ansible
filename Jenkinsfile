@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'ansible-agent' // Use the agent with the label ansible-agent
-    }
+    agent any
     environment {
         PEM_FILE = credentials('my-pem-file') // Use the credentials plugin to handle the PEM file
     }
