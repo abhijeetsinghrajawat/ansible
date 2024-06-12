@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PEM_FILE = credentials('ed59029c-9f62-41dc-ae09-044cfa5b8170') // Use the credentials plugin to handle the PEM file
+        PEM_FILE = credentials('ansible-pem-file') // Use the credentials plugin to handle the PEM file
     }
     stages {
         stage('Checkout SCM') {
@@ -16,16 +16,27 @@ pipeline {
                 sh 'cp $PEM_FILE /tmp/my-ansible-key.pem'
                 sh 'chmod 600 /tmp/my-ansible-key.pem'
 
-                // Dynamically create or modify the Ansible inventory file to include the target server
+                // Add the server's SSH key to known hosts to avoid host key verification errors
+                sh 'ssh-keyscan -H 15.206.149.52 >> ~/.ssh/known_hosts'
+
+                // Create the Ansible inventory file
                 writeFile file: 'inventory', text: '''
                 [all]
                 ubuntu_vm ansible_host=15.206.149.52 ansible_user=ubuntu ansible_ssh_private_key_file=/tmp/my-ansible-key.pem
-
                 '''
             }
         }
         stage('Run Ansible Playbook') {
             steps {
+                // Ensure Ansible is installed
+                sh '''
+                if ! command -v ansible-playbook &> /dev/null
+                then
+                    sudo apt update
+                    sudo apt install -y ansible
+                fi
+                '''
+
                 // Run the Ansible playbook
                 sh 'ansible-playbook -i inventory playbook.yml'
             }
