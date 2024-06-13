@@ -28,15 +28,6 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 script {
-                    // Ensure Ansible is installed
-                    sh '''
-                    if ! command -v ansible-playbook &> /dev/null
-                    then
-                        sudo apt update
-                        sudo apt install -y ansible
-                    fi
-                    '''
-
                     // Run the Ansible playbook
                     sh 'ansible-playbook -i inventory playbook.yml'
                 }
