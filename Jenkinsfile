@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PEM_FILE = credentials('ansible-pem-file') // Use the credentials plugin to handle the PEM file
+        PEM_FILE = credentials('ed59029c-9f62-41dc-ae09-044cfa5b8170') // Use the credentials plugin to handle the PEM file
     }
     stages {
         stage('Checkout SCM') {
