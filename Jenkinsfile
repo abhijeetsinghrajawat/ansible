@@ -17,12 +17,6 @@ pipeline {
                     sh 'cp $PEM_FILE /tmp/my-ansible-key.pem'
                     sh 'chmod 600 /tmp/my-ansible-key.pem'
 
-                    // Add the server's SSH key to known hosts to avoid host key verification errors
-                    sh '''
-                    mkdir -p ~/.ssh
-                    ssh-keyscan -H 15.206.149.52 >> ~/.ssh/known_hosts
-                    '''
-
                     // Create the Ansible inventory file
                     writeFile file: 'inventory', text: '''
                     [all]
