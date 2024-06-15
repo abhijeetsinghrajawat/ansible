@@ -1,17 +1,37 @@
 ---
-- name: Create a file on Ubuntu VM
+- name: Install Nginx
   hosts: all
-  become: yes
-  tasks:
-    - name: Ensure the destination directory exists
-      file:
-        path: /home/ubuntu/ansible_test
-        state: directory
-        mode: '0755'
+  become: true  # This allows Ansible to become root (sudo)
 
-    - name: Create a file with specific content
-      copy:
-        dest: /home/ubuntu/ansible.txt
-        content: "Hello, this is a file created by Ansible.\n"
-        mode: '0644'
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      tags:
+        - nginx
+
+    - name: Start Nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+      tags:
+        - nginx
+
+    - name: Copy Nginx configuration file
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - Reload Nginx
+      tags:
+        - nginx
+
+  handlers:
+    - name: Reload Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+
 
