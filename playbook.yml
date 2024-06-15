@@ -1,6 +1,6 @@
 ---
 - name: Install Nginx
-  hosts: all
+  hosts: servers
   become: true  # This allows Ansible to become root (sudo)
 
   tasks:
