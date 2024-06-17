@@ -1,7 +1,4 @@
 [servers]
-13.201.77.178 
+13.201.77.178 ansible_user=ubuntu
 
-[servers:vars]
-ansible_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/laravel.pem
 
