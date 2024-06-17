@@ -1,37 +1,20 @@
----
-- name: Install Nginx
+- name: Configure Apache for demo host
   hosts: servers
-  become: true  # This allows Ansible to become root (sudo)
-
+  become: true
   tasks:
-    - name: Install Nginx
-      ansible.builtin.package:
-        name: nginx
-        state: present
-      tags:
-        - nginx
-
-    - name: Start Nginx service
-      ansible.builtin.service:
-        name: nginx
-        state: started
-        enabled: yes
-      tags:
-        - nginx
-
-    - name: Copy Nginx configuration file
-      ansible.builtin.template:
-        src: nginx.conf.j2
-        dest: /etc/nginx/nginx.conf
-      notify:
-        - Reload Nginx
-      tags:
-        - nginx
-
+    - name: Create Apache config file
+      template:
+        src: templates/example.com.conf.j2
+        dest: /etc/apache2/sites-available/example.com.conf
+      notify: Restart Apache
+ 
+    - name: Enable site
+      command: a2ensite example.com.conf
+      notify: Restart Apache
+ 
   handlers:
-    - name: Reload Nginx
-      ansible.builtin.service:
-        name: nginx
-        state: reloaded
-
-
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+ 
